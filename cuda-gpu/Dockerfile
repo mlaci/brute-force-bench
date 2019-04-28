@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-base-ubuntu16.04
+FROM nvidia/cuda:10.1-base-ubuntu18.04
 
 # install build tools
 RUN apt-get update -y && apt-get install -y \
@@ -10,5 +10,5 @@ RUN apt-get update -y && apt-get install -y \
 
 # install argon2-gpu
 RUN git clone --recursive https://gitlab.com/omos/argon2-gpu.git && \
-    cmake -DCMAKE_BUILD_TYPE=Release argon2-gpu install && \
+    cmake install -DCMAKE_BUILD_TYPE=Release argon2-gpu && \
     rm -rf argon2-gpu

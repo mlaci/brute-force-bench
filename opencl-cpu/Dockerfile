@@ -11,8 +11,8 @@ RUN apt-get update -y && apt-get install -y \
 # install opencl cpu driver
 RUN mkdir opencl && \
     cd opencl && \
-    sudo curl -L http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15365/l_opencl_p_18.1.0.014.tgz | \
-    sudo tar -xz --strip=1 && \
+    curl -L http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15365/l_opencl_p_18.1.0.014.tgz | \
+    tar -xz --strip=1 && \
     sed -i 's/decline/accept/' silent.cfg && \
     install.sh -s silent.cfg && \
     cd .. && \
