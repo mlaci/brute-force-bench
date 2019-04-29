@@ -14,7 +14,7 @@ RUN mkdir opencl && \
     curl -L http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15365/l_opencl_p_18.1.0.014.tgz | \
     tar -xz --strip=1 && \
     sed -i 's/decline/accept/' silent.cfg && \
-    install.sh -s silent.cfg && \
+    ./install.sh -s silent.cfg && \
     cd .. && \
     rm -rf opencl
 
