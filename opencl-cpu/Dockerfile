@@ -7,6 +7,8 @@ RUN apt-get update -y && apt-get install -y \
     make \
     gcc \
     cpio \
+    libnuma1 \
+    lsb-core \
  && rm -rf /var/lib/apt/lists/*
 
 # install opencl cpu driver
