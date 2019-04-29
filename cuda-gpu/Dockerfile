@@ -3,12 +3,15 @@ FROM nvidia/cuda:10.1-base-ubuntu18.04
 # install build tools
 RUN apt-get update -y && apt-get install -y \
     curl \
-    git \
-    cmake \
-    gcc \
+    unzip \
+    ocl-icd-libopencl1 && \
  && rm -rf /var/lib/apt/lists/*
 
 # install argon2-gpu
-RUN git clone --recurse-submodulese https://gitlab.com/omos/argon2-gpu.git && \
-    cmake install -DCMAKE_BUILD_TYPE=Release argon2-gpu && \
-    rm -rf argon2-gpu
+RUN curl -L https://gitlab.com/omos/argon2-gpu/-/jobs/artifacts/master/download?job=build-gcc-cuda -o build.zip && \
+    unzip build.zip && \
+    cd build/gcc-cuda && \
+    install ./*.so ext/argon2/libargon2.so.1 /usr/lib && \
+    install argon2-gpu-bench /usr/local/bin && \
+    cd ../.. && \
+    rm -rf build build.zip
