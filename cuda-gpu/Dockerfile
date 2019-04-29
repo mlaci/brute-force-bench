@@ -6,7 +6,6 @@ RUN apt-get update -y && apt-get install -y \
     git \
     cmake \
     gcc \
-    cpio \
  && rm -rf /var/lib/apt/lists/*
 
 # install argon2-gpu

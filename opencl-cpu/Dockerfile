@@ -6,6 +6,7 @@ RUN apt-get update -y && apt-get install -y \
     git \
     make \
     gcc \
+    cpio \
  && rm -rf /var/lib/apt/lists/*
 
 # install opencl cpu driver
