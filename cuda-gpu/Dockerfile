@@ -4,7 +4,7 @@ FROM nvidia/cuda:10.1-base-ubuntu18.04
 RUN apt-get update -y && apt-get install -y \
     curl \
     unzip \
-    ocl-icd-libopencl1 && \
+    ocl-icd-libopencl1 \
  && rm -rf /var/lib/apt/lists/*
 
 # install argon2-gpu
