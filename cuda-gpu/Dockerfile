@@ -15,3 +15,8 @@ RUN curl -L https://gitlab.com/omos/argon2-gpu/-/jobs/artifacts/master/download?
     install argon2-gpu-bench /usr/local/bin && \
     cd ../.. && \
     rm -rf build build.zip
+
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get install -y nodejs \
+ && rm -rf /var/lib/apt/lists/*

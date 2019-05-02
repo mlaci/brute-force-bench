@@ -26,6 +26,11 @@ RUN git clone https://github.com/P-H-C/phc-winner-argon2.git argon2 && \
     make -C argon2 install && \
     rm -rf argon2
 
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get install -y nodejs \
+ && rm -rf /var/lib/apt/lists/*
+
 # install hashcat
 RUN git clone https://github.com/hashcat/hashcat.git && \
     make -C hashcat install && \
