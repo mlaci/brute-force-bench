@@ -18,6 +18,12 @@ function RandomString(length){
   return Buffer.from(arrayBuffer).toString('hex').slice(0,length)
 }
 
+function nvidiaInfo(){
+  var {stdout} = spawnSync("nvidia-smi", ["-q"])
+  return stdout.toString().mathAll(/Product Name.*\n/g).map((match, i)=>"i. "+match[0]).join()
+}
+console.log(nvidiaInfo())
+
 var costs = []
 
 //gpu memory

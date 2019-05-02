@@ -18,6 +18,12 @@ function RandomString(length){
   return Buffer.from(arrayBuffer).toString('hex').slice(0,length)
 }
 
+function clInfo(){
+  var {stdout} = spawnSync("clinfo", ["--list"])
+  return stdout.toString()
+}
+console.log(clInfo())
+
 var costs = []
 
 //hashcat codes and hash format
