@@ -15,6 +15,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 
 # install hashcat
 RUN git clone https://github.com/hashcat/hashcat.git && \
+    sed -i 's/format_speed_display (hashes_msec_dev \* 1000, display, HCBUFSIZ_TINY);/snprintf (display, HCBUFSIZ_TINY, "%.5f ", hashes_msec_dev * 1000);/' src/status.c && \
     make -C hashcat install && \
     rm -rf hashcat
 
