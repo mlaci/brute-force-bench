@@ -36,4 +36,4 @@ RUN git clone https://github.com/hashcat/hashcat.git && \
     make -C hashcat install && \
     rm -rf hashcat
 
-COPY bench.js /benchmark
+COPY /opencl-cpu/bench.js /benchmark
