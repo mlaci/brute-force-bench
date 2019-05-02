@@ -17,3 +17,5 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 RUN git clone https://github.com/hashcat/hashcat.git && \
     make -C hashcat install && \
     rm -rf hashcat
+
+COPY ./bench.js /
