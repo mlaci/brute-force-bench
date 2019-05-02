@@ -21,4 +21,4 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     apt-get install -y nodejs \
  && rm -rf /var/lib/apt/lists/*
 
-COPY ./bench.js /
+COPY bench.js /
