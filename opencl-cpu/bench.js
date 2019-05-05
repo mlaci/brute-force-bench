@@ -24,7 +24,7 @@ function RandomString(length){
 
 function hashcatInfo(){
   var {stdout} = spawnSync("hashcat", ["--opencl-info"])
-  return [...stdout.toString().mathAll(/(?:.*Platform ID.*\n)|(?:.*Device ID.*\n)|(?:.*Name.*\n)/g)].map(match=>match[0]).join()
+  return [...stdout.toString().matchAll(/(?:.*Platform ID.*\n)|(?:.*Device ID.*\n)|(?:.*Name.*\n)/g)].map(match=>match[0]).join()
 }
 console.log(hashcatInfo())
 

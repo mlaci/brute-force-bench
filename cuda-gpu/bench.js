@@ -20,7 +20,7 @@ function RandomString(length){
 
 function nvidiaInfo(){
   var {stdout} = spawnSync("nvidia-smi", ["-q"])
-  return stdout.toString().mathAll(/Product Name.*\n/g).map((match, i)=>"i. "+match[0]).join()
+  return stdout.toString().matchAll(/Product Name.*\n/g).map((match, i)=>"i. "+match[0]).join()
 }
 console.log(nvidiaInfo())
 
