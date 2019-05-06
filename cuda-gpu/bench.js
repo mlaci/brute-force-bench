@@ -55,7 +55,7 @@ function argon2Gpu({time = 1, memory, parallelism = 1, batchSize, samples} = {})
 }
 
 const gpuMemory = nvidiaMemory()
-const gpuMemories = [...Array(Math.ceil(Math.log2(gpuMemory)))].map((_,i)=>2**i).slice(0,11)
+const gpuMemories = [...Array(Math.ceil(Math.log2(gpuMemory)))].map((_,i)=>2**i).slice(0,10)
 
 //argon2-gpu-bench
 gpuMemories.forEach(memory=>{

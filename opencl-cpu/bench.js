@@ -94,7 +94,7 @@ function hashcat({code, hash}, arg1, arg2, arg3){
 //thread loop
 const threads = [...Array(Math.ceil(Math.log2(vcpus)))].map((_,i)=>2**i).concat([vcpus])
 //memory loop
-const memories = [...Array(Math.ceil(Math.log2(vmem/1024/1024)))].map((_,i)=>2**i).slice(0,11)
+const memories = [...Array(Math.ceil(Math.log2(vmem/1024/1024)))].map((_,i)=>2**i).slice(0,10)
 
 //argon2 cpu bench
 threads.forEach(parallelism=>{

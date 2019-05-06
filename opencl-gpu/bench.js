@@ -75,7 +75,7 @@ function nvidiaMemory(){
 }
 
 const gpuMemory = nvidiaMemory()
-const gpuMemories = [...Array(Math.ceil(Math.log2(gpuMemory)))].map((_,i)=>2**i).slice(0,11)
+const gpuMemories = [...Array(Math.ceil(Math.log2(gpuMemory)))].map((_,i)=>2**i).slice(0,10)
 
 //hashcat bench gpu
 Object.entries(hashTypes).forEach(([hashName, hashType])=>{
