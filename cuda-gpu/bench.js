@@ -1,22 +1,4 @@
 const {spawnSync} = require("child_process")
-const {randomFillSync} = require("crypto")
-
-//input generation
-function randomBase64(length){
-  var arrayBuffer = new Uint8Array(length/8 || 6)
-  randomFillSync(arrayBuffer)
-  return Buffer.from(arrayBuffer).toString('base64')
-}
-function RandomHex(length){
-  var arrayBuffer = new Uint8Array(length/8 || 32)
-  randomFillSync(arrayBuffer)
-  return Buffer.from(arrayBuffer).toString('hex')
-}
-function RandomString(length){
-  var arrayBuffer = new Uint8Array(200)
-  randomFillSync(arrayBuffer)
-  return Buffer.from(arrayBuffer).toString('hex').slice(0,length)
-}
 
 function nvidiaInfo(){
   var {stdout} = spawnSync("nvidia-smi", ["-q"])
