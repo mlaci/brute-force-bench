@@ -135,4 +135,4 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   }
 })
 
-console.log(JSON.stringify(cost))
+console.log(JSON.stringify(costs))

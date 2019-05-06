@@ -69,4 +69,4 @@ gpuMemories.forEach(memory=>{
   })
 })
 
-console.log(JSON.stringify(cost))
+console.log(JSON.stringify(costs))
