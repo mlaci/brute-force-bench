@@ -46,7 +46,7 @@ function argon2Bench(params){
     time = (time*samples + argon2(params)) / (samples + 1)
     samples = samples + 1
   }
-  return (1/time).toFixed(6) // H/s
+  return 1/time // H/s
 }
 
 //hashcat codes and hash format
@@ -100,7 +100,7 @@ const memories = [...Array(Math.ceil(Math.log2(vmem/1024/1024)))].map((_,i)=>2**
 threads.forEach(parallelism=>{
   memories.forEach(memory=>{
     var speed = argon2Bench({parallelism, memory: memory*1024})
-    var [p, m, s] = [parallelism, memory, speed].map(String)
+    var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
     console.log(`argon2-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
     costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
   })
@@ -112,7 +112,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
     var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5]
     iterations.forEach(iteration=>{
       var speed = hashcat(hashType, iteration)
-      var [it, s] = [iteration, speed].map(String)
+      var [it, s] = [iteration, speed.toFixed(6)].map(String)
       console.log(`pbkdf2-sha256-cpu -it ${it.padStart(6)}:\t${s.padStart(10)} H/s`)
       costs = costs.concat([{name: `pbkdf2-sha256-cpu-${iteration}`, iteration, speed}])
     })
@@ -121,7 +121,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
     threads.forEach(parallelism=>{
       memories.forEach(memory=>{
         var speed = hashcat(hashType, memory*1024, 1, parallelism)
-        var [p, m, s] = [parallelism, memory, speed].map(String)
+        var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
         console.log(`scrypt-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
         costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
       })
@@ -129,6 +129,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   }
   else{
     var speed = hashcat(hashType)
+    var s = speed.toFixed(6)
     console.log(`${hashName}-cpu:\t${s.padStart(10)} H/s`)
     costs = costs.concat([{name: `${hashName}-cpu`, speed}])
   }

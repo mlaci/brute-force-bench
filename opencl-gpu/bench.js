@@ -83,7 +83,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
     var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5, 1*10**6]
     iterations.forEach(iteration=>{
       var speed = hashcat(hashType, iteration)
-      var [it, s] = [iteration, speed].map(String)
+      var [it, s] = [iteration, speed.toFixed(6)].map(String)
       console.log(`pbkdf2-sha256-gpu -it ${it.padStart(6)}:\t${s.padStart(10)} H/s`)
       costs = costs.concat([{name: `pbkdf2-sha256-gpu-${iteration}`, iteration, speed}])
     })
@@ -91,13 +91,14 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   else if(hashType==hashTypes.scrypt){
     gpuMemories.forEach(memory=>{
       var speed = hashcat(hashType, memory*1024, 1, parallelism)
-      var [p, m, s] = [parallelism, memory, speed].map(String)
+      var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
       console.log(`scrypt-gpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
       costs = costs.concat([{name: `scrypt-gpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
     })
   }
   else{
     var speed = hashcat(hashType)
+    var s = speed.toFixed(6)
     console.log(`${hashName}-gpu:\t${s.padStart(10)} H/s`)
     costs = costs.concat([{name: `${hashName}-gpu`, speed}])
   }
