@@ -90,10 +90,10 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   }
   else if(hashType==hashTypes.scrypt){
     gpuMemories.forEach(memory=>{
-      var speed = hashcat(hashType, memory*1024, 1, parallelism)
-      var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
-      console.log(`scrypt-gpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-      costs = costs.concat([{name: `scrypt-gpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
+      var speed = hashcat(hashType, memory*1024, 1, 1)
+      var [m, s] = [memory, speed.toFixed(6)].map(String)
+      console.log(`scrypt-gpu -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
+      costs = costs.concat([{name: `scrypt-gpu-1-${m}`, memory, speed}])
     })
   }
   else{
