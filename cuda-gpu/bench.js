@@ -20,7 +20,7 @@ function RandomString(length){
 
 function nvidiaInfo(){
   var {stdout} = spawnSync("nvidia-smi", ["-q"])
-  return stdout.toString().matchAll(/Product Name.*\n/g).map((match, i)=>"i. "+match[0]).join()
+  return [...stdout.toString().matchAll(/Product Name.*\n/g).map((match, i)=>"i. "+match[0])].join()
 }
 console.log(nvidiaInfo())
 
@@ -64,7 +64,7 @@ gpuMemories.forEach(memory=>{
   batchSizes.forEach(batchSize=>{
     var speed = argon2Gpu({memory, batchSize, samples: 20})
     var [b, m, s] = [batchSize, memory, speed.toFixed(6)].map(String)
-    console.log(`argon2-gpu -b ${p.padStart(6)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
+    console.log(`argon2-gpu -b ${b.padStart(6)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
     costs = costs.concat([{name: `argon2-gpu-${b}-${m}`, memory, speed: speed*batchSize}])
   })
 })
