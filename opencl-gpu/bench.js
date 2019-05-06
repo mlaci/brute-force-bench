@@ -80,7 +80,7 @@ const gpuMemories = [...Array(Math.ceil(Math.log2(gpuMemory)))].map((_,i)=>2**i)
 //hashcat bench gpu
 Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   if(hashType==hashTypes.pbkdf2){
-    var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5, 1*10**6]
+    var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5]
     iterations.forEach(iteration=>{
       var speed = hashcat(hashType, iteration)
       var [it, s] = [iteration, speed.toFixed(6)].map(String)

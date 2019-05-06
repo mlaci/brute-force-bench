@@ -1,0 +1,43 @@
+i. Product Name                    : Tesla K80
+
+argon2-gpu -b   5721 -m    1 MiB:   26497.787435 H/s
+argon2-gpu -b   8581 -m    1 MiB:   28743.891923 H/s
+argon2-gpu -b  10297 -m    1 MiB:   28917.613719 H/s
+argon2-gpu -b  11213 -m    1 MiB:   28925.978421 H/s
+argon2-gpu -b   2860 -m    2 MiB:   14397.604239 H/s
+argon2-gpu -b   4290 -m    2 MiB:   14346.173158 H/s
+argon2-gpu -b   5148 -m    2 MiB:   14411.298458 H/s
+argon2-gpu -b   5606 -m    2 MiB:   14375.251567 H/s
+argon2-gpu -b   1430 -m    4 MiB:    7127.482146 H/s
+argon2-gpu -b   2145 -m    4 MiB:    6875.356659 H/s
+argon2-gpu -b   2574 -m    4 MiB:    6949.222035 H/s
+argon2-gpu -b   2803 -m    4 MiB:    7017.051435 H/s
+argon2-gpu -b    715 -m    8 MiB:    3160.206678 H/s
+argon2-gpu -b   1073 -m    8 MiB:    3184.145503 H/s
+argon2-gpu -b   1287 -m    8 MiB:    3261.855213 H/s
+argon2-gpu -b   1402 -m    8 MiB:    3516.087860 H/s
+argon2-gpu -b    358 -m   16 MiB:    1586.603985 H/s
+argon2-gpu -b    537 -m   16 MiB:    1572.574304 H/s
+argon2-gpu -b    644 -m   16 MiB:    1418.773782 H/s
+argon2-gpu -b    701 -m   16 MiB:    1529.969033 H/s
+argon2-gpu -b    179 -m   32 MiB:     802.075772 H/s
+argon2-gpu -b    268 -m   32 MiB:     594.707107 H/s
+argon2-gpu -b    322 -m   32 MiB:     702.912589 H/s
+argon2-gpu -b    350 -m   32 MiB:     763.596601 H/s
+argon2-gpu -b     89 -m   64 MiB:     223.464686 H/s
+argon2-gpu -b    134 -m   64 MiB:     322.842460 H/s
+argon2-gpu -b    161 -m   64 MiB:     361.293996 H/s
+argon2-gpu -b    175 -m   64 MiB:     386.010963 H/s
+argon2-gpu -b     45 -m  128 MiB:      58.447786 H/s
+argon2-gpu -b     67 -m  128 MiB:      83.648451 H/s
+argon2-gpu -b     81 -m  128 MiB:     100.230902 H/s
+argon2-gpu -b     88 -m  128 MiB:     108.547379 H/s
+argon2-gpu -b     22 -m  256 MiB:      14.291963 H/s
+argon2-gpu -b     33 -m  256 MiB:      21.283118 H/s
+argon2-gpu -b     40 -m  256 MiB:      25.557261 H/s
+argon2-gpu -b     44 -m  256 MiB:      28.004057 H/s
+argon2-gpu -b     11 -m  512 MiB:       3.598183 H/s
+argon2-gpu -b     17 -m  512 MiB:       5.504450 H/s
+argon2-gpu -b     20 -m  512 MiB:       6.431557 H/s
+argon2-gpu -b     22 -m  512 MiB:       7.043706 H/s
+[{"name":"argon2-gpu-5721-1","memory":1,"speed":26497.7874347492},{"name":"argon2-gpu-8581-1","memory":1,"speed":28743.891922966373},{"name":"argon2-gpu-10297-1","memory":1,"speed":28917.61371851595},{"name":"argon2-gpu-11213-1","memory":1,"speed":28925.978421220098},{"name":"argon2-gpu-2860-2","memory":2,"speed":14397.604238654689},{"name":"argon2-gpu-4290-2","memory":2,"speed":14346.17315831002},{"name":"argon2-gpu-5148-2","memory":2,"speed":14411.298457991066},{"name":"argon2-gpu-5606-2","memory":2,"speed":14375.251566902421},{"name":"argon2-gpu-1430-4","memory":4,"speed":7127.482145657225},{"name":"argon2-gpu-2145-4","memory":4,"speed":6875.356659126693},{"name":"argon2-gpu-2574-4","memory":4,"speed":6949.222034593227},{"name":"argon2-gpu-2803-4","memory":4,"speed":7017.051434987019},{"name":"argon2-gpu-715-8","memory":8,"speed":3160.2066775167095},{"name":"argon2-gpu-1073-8","memory":8,"speed":3184.145502712892},{"name":"argon2-gpu-1287-8","memory":8,"speed":3261.855212770816},{"name":"argon2-gpu-1402-8","memory":8,"speed":3516.087860003446},{"name":"argon2-gpu-358-16","memory":16,"speed":1586.60398523189},{"name":"argon2-gpu-537-16","memory":16,"speed":1572.5743041358703},{"name":"argon2-gpu-644-16","memory":16,"speed":1418.773782195524},{"name":"argon2-gpu-701-16","memory":16,"speed":1529.9690334267634},{"name":"argon2-gpu-179-32","memory":32,"speed":802.0757720981901},{"name":"argon2-gpu-268-32","memory":32,"speed":594.7071067499256},{"name":"argon2-gpu-322-32","memory":32,"speed":702.9125886021318},{"name":"argon2-gpu-350-32","memory":32,"speed":763.5966010788093},{"name":"argon2-gpu-89-64","memory":64,"speed":223.46468587569106},{"name":"argon2-gpu-134-64","memory":64,"speed":322.84245998206285},{"name":"argon2-gpu-161-64","memory":64,"speed":361.2939961247606},{"name":"argon2-gpu-175-64","memory":64,"speed":386.010962711341},{"name":"argon2-gpu-45-128","memory":128,"speed":58.447785787462344},{"name":"argon2-gpu-67-128","memory":128,"speed":83.64845098961973},{"name":"argon2-gpu-81-128","memory":128,"speed":100.2309019287733},{"name":"argon2-gpu-88-128","memory":128,"speed":108.5473788141785},{"name":"argon2-gpu-22-256","memory":256,"speed":14.29196293608084},{"name":"argon2-gpu-33-256","memory":256,"speed":21.283118341203974},{"name":"argon2-gpu-40-256","memory":256,"speed":25.557261389165454},{"name":"argon2-gpu-44-256","memory":256,"speed":28.00405677968133},{"name":"argon2-gpu-11-512","memory":512,"speed":3.598182963660093},{"name":"argon2-gpu-17-512","memory":512,"speed":5.504449948710911},{"name":"argon2-gpu-20-512","memory":512,"speed":6.431557108982408},{"name":"argon2-gpu-22-512","memory":512,"speed":7.0437064095826525}]
