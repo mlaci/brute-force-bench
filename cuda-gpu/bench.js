@@ -43,7 +43,7 @@ gpuMemories.forEach(memory=>{
     var speed = argon2Gpu({memory, batchSize, samples: 20})
     var [b, m, s] = [batchSize, memory, speed].map(String)
     console.log(`argon2-gpu -b ${p.padStart(6)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-    costs = consts.concat([{name: `argon2-gpu-${b}-${m}`, memory, speed: speed*batchSize}])
+    costs = costs.concat([{name: `argon2-gpu-${b}-${m}`, memory, speed: speed*batchSize}])
   })
 })
 

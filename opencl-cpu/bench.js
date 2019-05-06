@@ -102,7 +102,7 @@ threads.forEach(parallelism=>{
     var speed = argon2Bench({parallelism, memory: memory*1024})
     var [p, m, s] = [parallelism, memory, speed].map(String)
     console.log(`argon2-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-    costs = consts.concat([{name: `argon2-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
+    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
   })
 })
 
@@ -114,7 +114,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
       var speed = hashcat(hashType, iteration)
       var [it, s] = [iteration, speed].map(String)
       console.log(`pbkdf2-sha256-cpu -it ${it.padStart(6)}:\t${s.padStart(10)} H/s`)
-      costs = consts.concat([{name: `pbkdf2-sha256-cpu-${iteration}`, iteration, speed}])
+      costs = costs.concat([{name: `pbkdf2-sha256-cpu-${iteration}`, iteration, speed}])
     })
   }
   else if(hashType==hashTypes.scrypt){
@@ -123,14 +123,14 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
         var speed = hashcat(hashType, memory*1024, 1, parallelism)
         var [p, m, s] = [parallelism, memory, speed].map(String)
         console.log(`scrypt-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-        costs = consts.concat([{name: `scrypt-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
+        costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
       })
     })
   }
   else{
     var speed = hashcat(hashType)
     console.log(`${hashName}-cpu:\t${s.padStart(10)} H/s`)
-    costs = consts.concat([{name: `${hashName}-cpu`, speed}])
+    costs = costs.concat([{name: `${hashName}-cpu`, speed}])
   }
 })
 
