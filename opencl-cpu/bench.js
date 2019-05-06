@@ -71,7 +71,7 @@ const units = {
 function hashcat({code, hash}, arg1, arg2, arg3){
 
   var args = ["-a", 3, "-O", "-m", code, "--runtime=10", "--status", "--status-timer=1", hash(arg1, arg2, arg3)]
-  var {stdout, error} = spawnSync("hashcat", args)
+  var {stdout, stderr, error} = spawnSync("hashcat", args)
 
   if(error){
     console.log(`hashcat ${args}: ${error}`)
@@ -81,11 +81,11 @@ function hashcat({code, hash}, arg1, arg2, arg3){
   try{
     var benches = [...stdout.toString().matchAll(/(?:Speed.#[0-9]+\.*: *[0-9]+(?:\.[0-9]+)? .?H\/s.*\n)+/g)]
     const lastN = 5
-    var lastBenches = [...benches.slice(-lastN)].map(bench=>[...bench.matchAll(/#[0-9]+\.*: *(?<n>[0-9]+(?:\.[0-9]+)?) (?<unit>.?H\/s)/g)])
+    var lastBenches = [...benches.slice(-lastN)].map(bench=>[...bench[0].matchAll(/#[0-9]+\.*: *(?<n>[0-9]+(?:\.[0-9]+)?) (?<unit>.?H\/s)/g)])
     return lastBenches.map(bench=>bench.reduce((sum, {groups:{n, unit}})=>sum + Number(n)*units[unit], 0)).reduce((sum, value)=>sum+value) / lastN
   }
-  catch{
-    console.log(stdout.toString())
+  catch(e){
+    console.log(e)
     console.error(stderr.toString())
     return 0
   }
