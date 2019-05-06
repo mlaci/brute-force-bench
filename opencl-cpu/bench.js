@@ -99,10 +99,10 @@ const memories = [...Array(Math.ceil(Math.log2(vmem/1024/1024)))].map((_,i)=>2**
 //argon2 cpu bench
 threads.forEach(parallelism=>{
   memories.forEach(memory=>{
-    var speed = argon2Bench({parallelism, memory: memory*1024})
-    var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
+    var speed = argon2Bench({parallelism, memory: parallelism*memory*1024})
+    var [p, m, s] = [parallelism, parallelism*memory, speed.toFixed(6)].map(String)
     console.log(`argon2-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
+    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory, speed}])
   })
 })
 
