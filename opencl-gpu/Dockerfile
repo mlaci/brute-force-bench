@@ -1,4 +1,4 @@
-FROM nvidia/opencl:runtime-ubuntu16.04
+FROM nvidia/opencl:runtime-ubuntu18.04
 
 # install build tools
 RUN apt-get update -y && apt-get install -y \
@@ -19,4 +19,4 @@ RUN git clone https://github.com/hashcat/hashcat.git && \
     make -C hashcat install && \
     rm -rf hashcat
 
-COPY /opencl-gpu/bench.js /bench.js
+COPY bench.js /bench.js
