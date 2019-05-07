@@ -102,7 +102,7 @@ threads.forEach(parallelism=>{
     var speed = argon2Bench({parallelism, memory: parallelism*memory*1024})
     var [p, m, s] = [parallelism, parallelism*memory, speed.toFixed(6)].map(String)
     console.log(`argon2-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory, speed}])
+    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory, speed: speed*parallelism}])
   })
 })
 
@@ -123,7 +123,7 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
         var speed = hashcat(hashType, memory*1024, 1, parallelism)
         var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
         console.log(`scrypt-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-        costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory: memory/parallelism, speed: speed*parallelism}])
+        costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory, speed: speed*parallelism}])
       })
     })
   }

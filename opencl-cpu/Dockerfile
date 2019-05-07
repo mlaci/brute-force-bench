@@ -23,6 +23,7 @@ RUN mkdir opencl && \
 
 # install argon2
 RUN git clone https://github.com/P-H-C/phc-winner-argon2.git argon2 && \
+    sed -i 's/printf("%2\.3f seconds/printf("%2.8f seconds/' argon2/src/run.c && \
     make -C argon2 install && \
     rm -rf argon2
 
