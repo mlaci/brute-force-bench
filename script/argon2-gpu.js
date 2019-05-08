@@ -24,9 +24,9 @@ function argon2Gpu({mode, time = 1, memory, parallelism = 1, batchSize, samples}
 }
 
 function argon2GpuBench(mode, memTotal){
+  const columnSizes = [25, 15, 20]
+  console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return memorySizes.flatMap(memory=>{
-      const columnSizes = [25, 15, 20]
-      console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
       var batchSize = mode=="cuda" && 2*Math.floor(memTotal/memory) || 10*2**19/memory
       var speed = argon2Gpu({mode, memory, batchSize, samples: 10})
       var name = `argon2-cpu-${memory}`
