@@ -104,4 +104,4 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   }
 })
 
-console.log(JSON.stringify(costs))
+console.log("[\n"+costs.map(cost=>"  "+JSON.stringify(cost)).join(",\n")+"\n]")

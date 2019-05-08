@@ -19,4 +19,5 @@ RUN git clone https://github.com/hashcat/hashcat.git && \
     make -C hashcat install && \
     rm -rf hashcat
 
-COPY bench.js /bench.js
+ENV BRUTE_FORCE_BENCH = "opencl-gpu"
+COPY /script /script

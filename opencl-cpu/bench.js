@@ -1,8 +1,7 @@
-const {cpus, totalmem} = require("os")
+const {totalmem} = require("os")
 const {spawnSync} = require("child_process")
 const {randomFillSync} = require("crypto")
 
-const vcpus = cpus().length
 const vmem = totalmem()
 
 //input generation
@@ -24,29 +23,30 @@ function RandomString(length){
 
 function hashcatInfo(){
   var {stdout} = spawnSync("hashcat", ["--opencl-info"])
-  return [...stdout.toString().matchAll(/(?:.*Platform ID.*\n)|(?:.*Device ID.*\n)|(?:.*Name.*\n)/g)].map(match=>match[0]).join()
-}
-console.log(hashcatInfo())
-
-var costs = []
-
-//call argon2
-function argon2({pass = randomBase64(), salt = randomBase64(), time = 1, memory = 1024, parallelism = 1} = {}){
-  var {stdout} = spawnSync("argon2", [salt, "-t", time, "-k", memory, "-p", parallelism], {input: pass})
-  return Number(stdout.toString().match(/(?<n>[0-9]+.[0-9]+) seconds/).groups.n) // s/H
+  return stdout.toString()
 }
 
-//benchmarking with argon2
-function argon2Bench(params){
-  var prevs = [...Array(5)].map(()=>0)
-  var time = argon2(params)
-  var samples = 1
-  while(prevs.some(prev=>Math.abs(prev-time) > time*0.001)){
-    prevs = prevs.slice(1).concat([time])
-    time = (time*samples + argon2(params)) / (samples + 1)
-    samples = samples + 1
+//benchmarking with argon2-gpu
+function argon2Gpu({mode, time = 1, memory, parallelism = 1, batchSize, samples} = {}){
+
+  var args = ["--output-type", "ns-per-hash", "--output-mode", "mean", "--type", "d",
+    "--mode", mode,
+    "--t-cost", time,
+    "--m-cost", memory,
+    "--lanes", parallelism,
+    "--batch-size", batchSize,
+    "--samples", samples
+  ]
+  var {stdout, error} = spawnSync("argon2-gpu-bench", args)
+  
+  if(error){
+    console.log(`argon2-gpu-bench ${args}: ${error}`)
+    return 0
   }
-  return 1/time // H/s
+  else{
+    return 1 / (Number(stdout.toString()) / 10**9) // s/H
+  }
+
 }
 
 //hashcat codes and hash format
@@ -91,18 +91,28 @@ function hashcat({code, hash}, arg1, arg2, arg3){
   }
 }
 
-//thread loop
-const threads = [...Array(Math.ceil(Math.log2(vcpus)))].map((_,i)=>2**i).concat([vcpus])
-//memory loop
-const memories = [...Array(Math.ceil(Math.log2(vmem/1024/1024)))].map((_,i)=>2**i).slice(0,10)
+var costs = []
+
+const memoryMax = 512*1024 //kiB
+const memorySizes = [...Array(Math.log2(memoryMax))].map((_,i)=>2**i).slice(3)
 
 //argon2 cpu bench
-threads.forEach(parallelism=>{
-  memories.forEach(memory=>{
-    var speed = argon2Bench({parallelism, memory: parallelism*memory*1024})
-    var [p, m, s] = [parallelism, parallelism*memory, speed.toFixed(6)].map(String)
-    console.log(`argon2-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-    costs = costs.concat([{name: `argon2-cpu-${p}-${m}`, memory, speed: speed*parallelism}])
+console.log(hashcatInfo())
+console.log(`Memory: ${vmem}`)
+
+const columnSizes = [20, 10, 12, 20]
+console.log(["name","batchSize","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
+
+memorySizes.forEach(memory=>{
+  const batchMax = Math.floor(vmem/memory)
+  const batchSizes = [0.1, 0.25, 0.5, 0.75, 0.9, 0.98].map(n=>Math.ceil(batchMax*n))
+  batchSizes.forEach(batchSize=>{
+    var speed = argon2Gpu({mode: "cpu", memory, batchSize, samples: 10})
+    var memoryUsage = Number(batchSize/batchMax.toFixed(2))
+    var name = `argon2-cpu-${memoryUsage}-${memory}`
+    var values = [name, `${memoryUsage}`, `${memory}`, speed.toFixed(6)]
+    console.log(values.map((v,i)=>v.padStart(columnSizes[i])).join("|"))
+    costs = costs.concat([{name, memoryUsage, memory, speed}])
   })
 })
 
@@ -118,13 +128,11 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
     })
   }
   else if(hashType==hashTypes.scrypt){
-    threads.forEach(parallelism=>{
-      memories.forEach(memory=>{
-        var speed = hashcat(hashType, memory*1024, 1, parallelism)
-        var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
-        console.log(`scrypt-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
-        costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory, speed: speed*parallelism}])
-      })
+    memorySizes.forEach(memory=>{
+      var speed = hashcat(hashType, memory, 8, 1)
+      var [p, m, s] = [parallelism, memory, speed.toFixed(6)].map(String)
+      console.log(`scrypt-cpu -p ${p.padStart(4)} -m ${m.padStart(4)} MiB:\t${s.padStart(10)} H/s`)
+      costs = costs.concat([{name: `scrypt-cpu-${p}-${m}`, memory, speed: speed*parallelism}])
     })
   }
   else{
@@ -135,4 +143,4 @@ Object.entries(hashTypes).forEach(([hashName, hashType])=>{
   }
 })
 
-console.log(JSON.stringify(costs))
+console.log("[\n"+costs.map(cost=>"  "+JSON.stringify(cost)).join(",\n")+"\n]")
