@@ -26,7 +26,7 @@ const hashTypes = {
   sha256: {code: 1400, hash: ()=>RandomHex(256)}, 
   bcrypt: {code: 3200, hash: ()=>`$2a$05$${RandomString(53)}`},
   pbkdf2: {code: 10900, hash: (iteration)=>`sha256:${iteration}:${randomBase64()}:${randomBase64(20*8)}`},
-  scrypt: {code: 8900, hash: (m,t,p)=>`SCRYPT:${m|1024}:${t|1}:${p|1}:${RandomString(20)}:${RandomString(44)}`},
+  scrypt: {code: 8900, hash: (N=1024,r=8,p=1)=>`SCRYPT:${N}:${r}:${p}:${RandomString(20)}:${RandomString(44)}`},
 }
 
 function hashcat({code, hash}, arg1, arg2, arg3){
@@ -40,7 +40,7 @@ function hashcat({code, hash}, arg1, arg2, arg3){
   }
 
   try{
-    var benches = [...stdout.toString().matchAll(/(?:Speed.#[0-9]+\.*: *[0-9]+(?:\.[0-9]+)? .?H\/s.*\n)+/g)]
+    var benches = [...stdout.toString().matchAll(/(?:Speed.#[0-9]+\.*: *[0-9]+(?:\.[0-9]+)? H\/s.*\n)+/g)]
     const lastN = 10
     var lastBenches = [...benches.slice(-lastN)].map(bench=>[...bench[0].matchAll(/#[0-9]+\.*: *(?<n>[0-9]+(?:\.[0-9]+)?) H\/s/g)])
     return lastBenches.map(bench=>bench.reduce((sum, {groups:{n}})=>sum + Number(n), 0)).reduce((sum, value)=>sum+value) / lastN
@@ -81,6 +81,7 @@ function scrypt(mode){
   const columnSizes = [25, 15, 20]
   console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return memorySizes.map(memory=>{
+    console.log(memory)
     var speed = hashcat(hashTypes.scrypt, memory, 8, 1)
     var name = `scrypt-${mode}-${memory}`
     var values = [name, `${memory}`, speed.toFixed(6)]
