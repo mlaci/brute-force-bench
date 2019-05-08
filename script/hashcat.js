@@ -31,7 +31,7 @@ const hashTypes = {
 
 function hashcat({code, hash}, arg1, arg2, arg3){
 
-  var args = ["-a", 3, "-O", "-m", code, "--runtime=10", "--status", "--status-timer=1", hash(arg1, arg2, arg3)]
+  var args = ["-a", 3, "-O", "-m", code, "--runtime=20", "--status", "--status-timer=1", hash(arg1, arg2, arg3)]
   var {stdout, stderr, error} = spawnSync("hashcat", args)
 
   if(error){
@@ -41,7 +41,7 @@ function hashcat({code, hash}, arg1, arg2, arg3){
 
   try{
     var benches = [...stdout.toString().matchAll(/(?:Speed.#[0-9]+\.*: *[0-9]+(?:\.[0-9]+)? .?H\/s.*\n)+/g)]
-    const lastN = 5
+    const lastN = 10
     var lastBenches = [...benches.slice(-lastN)].map(bench=>[...bench[0].matchAll(/#[0-9]+\.*: *(?<n>[0-9]+(?:\.[0-9]+)?) H\/s/g)])
     return lastBenches.map(bench=>bench.reduce((sum, {groups:{n}})=>sum + Number(n), 0)).reduce((sum, value)=>sum+value) / lastN
   }
@@ -53,7 +53,7 @@ function hashcat({code, hash}, arg1, arg2, arg3){
 }
 
 function hashes(tag){
-  const columnSizes = [20, 20]
+  const columnSizes = [20, 45]
   console.log(["name","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return ["md5", "sha1", "sha256", "bcrypt"].map(hashName=>{
     var speed = hashcat(hashTypes[hashName])
@@ -65,12 +65,12 @@ function hashes(tag){
 }
 
 function pbkdf2(tag){
-  const columnSizes = [20, 10, 20]
+  const columnSizes = [20, 15, 30]
   console.log(["name","iterations", "speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5]
   return iterations.map(iteration=>{
     var speed = hashcat(hashTypes.pbkdf2, iteration)
-    var name = `pbkdf2-sha256-${tag}-${iteration}`
+    var name = `pbkdf2-${tag}-${iteration}`
     var values = [name, `${iteration}`, speed.toFixed(6)]
     console.log(values.map((v,i)=>v.padStart(columnSizes[i])).join("|"))
     return {name, iteration, speed}
@@ -78,11 +78,11 @@ function pbkdf2(tag){
 }
 
 function scrypt(mode){
-  const columnSizes = [20, 12, 20]
+  const columnSizes = [20, 15, 30]
   console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return memorySizes.map(memory=>{
     var speed = hashcat(hashTypes.scrypt, memory, 8, 1)
-    var name = `scrypt-${mode}-${m}`
+    var name = `scrypt-${mode}-${memory}`
     var values = [name, `${memory}`, speed.toFixed(6)]
     console.log(values.map((v,i)=>v.padStart(columnSizes[i])).join("|"))
     return {name, memory, speed}
