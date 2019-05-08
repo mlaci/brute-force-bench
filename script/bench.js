@@ -10,20 +10,20 @@ var costs = []
 
 if(tag == "opencl-cpu"){
   const memTotal = systemMemory()
-  console.log(`System Memory: ${memTotal}`)
+  console.log(`System Memory: ${memTotal} kiB`)
   console.log(hashcatInfo())
   costs = costs.concat(hashcatBench("cpu"))
   costs = costs.concat(argon2GpuBench("cpu", memTotal))
 }
 else if(tag == "opencl-gpu"){
   const memTotal = gpuMemory()
-  console.log(`Gpu Memory: ${memTotal}`)
+  console.log(`Gpu Memory: ${memTotal} kiB`)
   console.log(hashcatInfo())
   costs = costs.concat(hashcatBench("gpu"))
 }
 else if(tag == "cuda-gpu"){
   const memTotal = gpuMemory()
-  console.log(`Gpu Memory: ${memTotal}`)
+  console.log(`Gpu Memory: ${memTotal} kiB`)
   console.log(nvidiaInfo())
   costs = costs.concat(argon2GpuBench("cuda", memTotal))
 }

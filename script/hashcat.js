@@ -29,7 +29,7 @@ const hashTypes = {
   scrypt: {code: 8900, hash: (m,t,p)=>`SCRYPT:${m|1024}:${t|1}:${p|1}:${RandomString(20)}:${RandomString(44)}`},
 }
 
-function hashcat(code, arg1, arg2, arg3){
+function hashcat({code, hash}, arg1, arg2, arg3){
 
   var args = ["-a", 3, "-O", "-m", code, "--runtime=10", "--status", "--status-timer=1", hash(arg1, arg2, arg3)]
   var {stdout, stderr, error} = spawnSync("hashcat", args)
