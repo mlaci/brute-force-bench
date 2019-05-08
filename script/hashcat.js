@@ -53,7 +53,7 @@ function hashcat({code, hash}, arg1, arg2, arg3){
 }
 
 function hashes(tag){
-  const columnSizes = [20, 45]
+  const columnSizes = [25, 36]
   console.log(["name","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return ["md5", "sha1", "sha256", "bcrypt"].map(hashName=>{
     var speed = hashcat(hashTypes[hashName])
@@ -65,7 +65,7 @@ function hashes(tag){
 }
 
 function pbkdf2(tag){
-  const columnSizes = [20, 15, 30]
+  const columnSizes = [25, 15, 20]
   console.log(["name","iterations", "speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   var iterations = [1*10**3, 2*10**3, 5*10**3, 1*10**4, 2*10**4, 5*10**4, 1*10**5, 2*10**5, 5*10**5]
   return iterations.map(iteration=>{
@@ -78,7 +78,7 @@ function pbkdf2(tag){
 }
 
 function scrypt(mode){
-  const columnSizes = [20, 15, 30]
+  const columnSizes = [25, 15, 20]
   console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return memorySizes.map(memory=>{
     var speed = hashcat(hashTypes.scrypt, memory, 8, 1)
