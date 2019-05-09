@@ -14,7 +14,7 @@ function argon2Gpu({mode, time = 1, memory, parallelism = 1, batchSize, samples}
   var {stdout, error} = spawnSync("argon2-gpu-bench", args)
   
   if(error){
-    console.log(`argon2-gpu-bench ${args}: ${error}`)
+    //console.log(`argon2-gpu-bench ${args}: ${error}`)
     return 0
   }
   else{
@@ -23,16 +23,19 @@ function argon2Gpu({mode, time = 1, memory, parallelism = 1, batchSize, samples}
 
 }
 
-function argon2GpuBench(mode, memTotal){
-  const columnSizes = [25, 15, 20]
-  console.log(["name","memory (kiB)","speed (H/s)"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
+function argon2GpuBench(mode, totalMemory){
+  const columnSizes = [25, 15, 20, 10]
+  console.log(["name","memory (kiB)","speed (H/s)","usage"].map((head,i)=>head.padEnd(columnSizes[i])).join("|"))
   return memorySizes.flatMap(memory=>{
-      var batchSize = mode=="cuda" && 2*Math.floor(memTotal/memory) || 10*2**19/memory
-      var speed = argon2Gpu({mode, memory, batchSize, samples: 10})
-      var name = `argon2-cpu-${memory}`
-      var values = [name, `${memory}`, speed.toFixed(6)]
+    var batchMax = mode=="cuda" && totalMemory/memory || 20*(1+(19-Math.log2(memory))*128) 
+    const memoryUsage = [...new Set([0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99, 1].map(usage=>Math.floor(batchMax*usage)))]
+    return memoryUsage.map(batchSize=>{
+      var speed = argon2Gpu({mode, batchSize, memory, samples: 10})
+      var name = `argon2-${mode}-${memory}`
+      var values = [name, `${memory}`, speed.toFixed(6), `${batchSize}`]
       console.log(values.map((v,i)=>v.padStart(columnSizes[i])).join("|"))
-      return [{name, memory, speed}]
+      return {name, memory, speed}
+    })
   })
 }
 
